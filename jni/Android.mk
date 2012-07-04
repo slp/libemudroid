@@ -26,7 +26,7 @@ LOCAL_LDLIBS := -ldl -llog
 
 # Also need the JNI headers.
 LOCAL_C_INCLUDES += \
-	$(JNI_H_INCLUDE)
+	$(LOCAL_PATH)/libnativehelper/include/
 
 # Special compiler flags.
 LOCAL_CFLAGS += -fvisibility=hidden
