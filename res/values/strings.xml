@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- File chooser -->
+	<string name="title_select_rom">Select ROM</string>
+	<string name="invalid_dir">Invalid directory</string>
+    <string name="no_files_in_folder">No appropriate files in this folder.</string>
+    
+    <string name="refresh">Refresh</string>
+</resources>
