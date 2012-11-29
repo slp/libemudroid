@@ -6,4 +6,8 @@
     <string name="no_files_in_folder">No appropriate files in this folder.</string>
     
     <string name="refresh">Refresh</string>
+    
+    <!-- Applications should override those -->
+    <string name="emulator_service_running">Emulator is running.</string>
+    <string name="app_label">Emulator</string>
 </resources>
