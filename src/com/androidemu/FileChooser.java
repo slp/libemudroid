@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 
-import android.util.Log;
-
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
