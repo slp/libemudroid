@@ -1,14 +1,17 @@
 package com.androidemu.wrapper;
 
+import java.io.File;
+
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
 
 import android.view.MotionEvent;
 
 @SuppressWarnings("deprecation")
 public class Wrapper
 {
-	static final int SDK_INT = Integer.parseInt(Build.VERSION.SDK);
+	public static final int SDK_INT = Integer.parseInt(Build.VERSION.SDK);
 
 	public static boolean isBluetoothPresent()
 	{
@@ -69,5 +72,21 @@ public class Wrapper
 	{
 		if (SDK_INT >= 5) return Wrapper5.MotionEvent_getSize(event, pointerIndex);
 		return event.getSize();
+	}
+	
+	public static final File getExternalScreenshotDirectory()
+	{
+		File picturesDir;
+		
+		if (SDK_INT >= 8)
+		{
+			picturesDir = Wrapper8.getExternalPicturesDirectory();
+		}
+		else
+		{
+			picturesDir = new File(Environment.getExternalStorageDirectory(), "pictures");
+		}
+		
+		return new File(picturesDir, "screenshots");
 	}
 }
