@@ -89,23 +89,29 @@ public class EmulatorService extends Service
 			CharSequence text = getText(R.string.emulator_service_running);
 
 			// Set the icon, scrolling text and timestamp
-			Notification notification = new Notification(R.drawable.app_icon, text, System.currentTimeMillis());
+			Notification notification = new Notification(R.drawable.app_icon, text,
+					System.currentTimeMillis());
 
 			// The PendingIntent to launch our activity if the user selects this
 			// notification
 			try
 			{
-				Class<Activity> clazz = (Class<Activity>)Class.forName("com.androidemu.EmulatorActivity");
-				
-				PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(
-						this, clazz), 0);
-				
-				// Set the info for the views that show in the notification panel.
+				Class<Activity> clazz = (Class<Activity>) Class
+						.forName("com.androidemu.EmulatorActivity");
+
+				PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+						new Intent(this, clazz), 0);
+
+				// Set the info for the views that show in the notification
+				// panel.
 				notification.setLatestEventInfo(this, getText(R.string.app_label), text,
 						contentIntent);
 			}
-			catch (ClassNotFoundException e) { e.printStackTrace(); }
-			
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+
 			startForegroundCompat(R.string.emulator_service_running, notification);
 
 		}

@@ -1,21 +1,29 @@
 package com.androidemu;
 
 import android.app.ListActivity;
-import android.content.ActivityNotFoundException;
+
 import android.content.Intent;
+
 import android.net.Uri;
+
 import android.os.Bundle;
+import android.os.Environment;
+
 import android.util.Log;
+
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileFilter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,8 +35,7 @@ public class FileChooser extends ListActivity implements FileFilter,
 	public static final String EXTRA_TITLE = "title";
 	public static final String EXTRA_FILTERS = "filters";
 
-	private static final String LOG_TAG = "FileChooser";
-	private final File sdcardDir = new File("/sdcard");
+	private final File sdcardDir = Environment.getExternalStorageDirectory();
 	private File currentDir;
 	private String[] filters;
 	private EditText pathEdit;

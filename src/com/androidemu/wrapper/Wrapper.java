@@ -73,11 +73,11 @@ public class Wrapper
 		if (SDK_INT >= 5) return Wrapper5.MotionEvent_getSize(event, pointerIndex);
 		return event.getSize();
 	}
-	
+
 	public static final File getExternalScreenshotDirectory()
 	{
 		File picturesDir;
-		
+
 		if (SDK_INT >= 8)
 		{
 			picturesDir = Wrapper8.getExternalPicturesDirectory();
@@ -86,7 +86,7 @@ public class Wrapper
 		{
 			picturesDir = new File(Environment.getExternalStorageDirectory(), "pictures");
 		}
-		
+
 		return new File(picturesDir, "screenshots");
 	}
 }

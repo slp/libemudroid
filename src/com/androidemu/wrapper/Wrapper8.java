@@ -12,6 +12,7 @@ public class Wrapper8
 {
 	public static File getExternalPicturesDirectory()
 	{
-		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		return Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 	}
 }
