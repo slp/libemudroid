@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Applications should override those -->
+    <string name="app_label">Emulator</string>
+    <string name="emulator_service_running">Emulator is running.</string>
+    <string name="no_cheats_help">"You haven't entered any cheats yet.\n\nTo add cheats, press <font fgcolor="#ffffffff"><b>Menu</b></font> and then <font fgcolor="#ffffffff"><b>New cheat</b></font>.</string>
+    
     <!-- File chooser -->
 	<string name="title_select_rom">Select ROM</string>
 	<string name="invalid_dir">Invalid directory</string>
     <string name="no_files_in_folder">No appropriate files in this folder.</string>
     
-    <string name="refresh">Refresh</string>
-    
-    <!-- Applications should override those -->
-    <string name="emulator_service_running">Emulator is running.</string>
-    <string name="app_label">Emulator</string>
+    <!-- Cheats -->
+	<string name="new_cheat">New cheat</string>
+	<string name="cheat_code">Code:</string>
+	<string name="cheat_name">Name (Optional):</string>
+	<string name="invalid_cheat_code">Cheat code is invalid!</string>
+	
+	<!-- common -->
+	<string name="help">Help</string>
+	<string name="cheats">Cheats</string>
+	<string name="refresh">Refresh</string>
+	<string name="menu_edit">Edit</string>
+	<string name="menu_delete">Delete</string>
+	<string name="settings">Settings</string>
 </resources>

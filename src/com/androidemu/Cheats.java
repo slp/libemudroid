@@ -1,20 +1,22 @@
 package com.androidemu;
 
-import android.util.Xml;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlSerializer;
 
+import android.util.Xml;
+
 public class Cheats
 {
-
 	public class Item
 	{
 		public boolean enabled;
