@@ -89,4 +89,21 @@ public class Wrapper
 
 		return new File(picturesDir, "screenshots");
 	}
+	
+	public static final boolean isHwMenuBtnAvailable(Context ctx)
+	{
+		boolean result = true;
+		
+		if (SDK_INT >= 11 && SDK_INT <= 13)
+		{
+			// key-less proprietary shit
+			result = false;
+		}
+		else if (SDK_INT >= 14)
+		{
+			result = Wrapper14.isHwMenuBtnAvailable(ctx);
+		}
+		
+		return result;
+	}
 }
