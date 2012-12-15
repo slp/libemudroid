@@ -1,9 +1,8 @@
-gen
-obj
-bin
-bin/*
-/bin/*
-/gen
-/obj
-libs/armeabi/*.so
+/gen/
+/obj/
+/bin/
+/libs/
 jarlist.cache
+project.properties
+.DS_Store
+*~
