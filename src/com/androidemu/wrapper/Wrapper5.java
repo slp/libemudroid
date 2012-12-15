@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 @TargetApi(Build.VERSION_CODES.ECLAIR)
@@ -65,5 +66,10 @@ class Wrapper5
 	public static final float MotionEvent_getSize(MotionEvent event, int pointerIndex)
 	{
 		return event.getSize(pointerIndex);
+	}
+
+	public static boolean KeyEvent_isLongPress(KeyEvent event)
+	{
+		return event.isLongPress();
 	}
 }

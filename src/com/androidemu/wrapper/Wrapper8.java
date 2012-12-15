@@ -8,9 +8,9 @@ import android.os.Build;
 import android.os.Environment;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
-public class Wrapper8
+class Wrapper8
 {
-	public static File getExternalPicturesDirectory()
+	static File getExternalPicturesDirectory()
 	{
 		return Environment
 				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
