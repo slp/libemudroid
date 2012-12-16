@@ -2,9 +2,9 @@ package com.androidemu.wrapper;
 
 import java.io.File;
 
-import com.androidemu.R;
-
+import android.R;
 import android.content.Context;
+
 import android.os.Build;
 import android.os.Environment;
 
@@ -222,7 +222,15 @@ public class Wrapper
 				return ",";
 
 			case KeyEvent.KEYCODE_DPAD_CENTER:
-				return "DPAD CENTER";
+				return "DPAD Center";
+			case KeyEvent.KEYCODE_DPAD_UP:
+				return "DPAD Up";
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				return "DPAD Down";
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				return "DPAD Left";
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				return "DPAD Right";
 			case KeyEvent.KEYCODE_BACK:
 				return "BACK";
 			case KeyEvent.KEYCODE_CALL:
@@ -237,6 +245,15 @@ public class Wrapper
 				return "Volume UP";
 			case KeyEvent.KEYCODE_VOLUME_DOWN:
 				return "Volume DOWN";
+				
+			case KeyEvent.KEYCODE_BUTTON_L1:
+				return "Left trigger";
+			case KeyEvent.KEYCODE_BUTTON_L2:
+				return "Right trigger";
+			case KeyEvent.KEYCODE_BUTTON_START:
+				return "Start";
+			case KeyEvent.KEYCODE_BUTTON_SELECT:
+				return "Select";
 
 			case 0:
 				return "-";
@@ -244,10 +261,11 @@ public class Wrapper
 			default:
 				if (SDK_INT >= 12)
 				{
-					return Wrapper12.keyCodeToString(keyCode);
+					return Wrapper12.keyCodeToString(keyCode)
+							.replaceFirst("KEYCODE_", "").replace('_', ' ');
 				}
 				else
-					return "? - " + String.valueOf(keyCode);
+					return "??? (№" + String.valueOf(keyCode) + ')';
 		}
 	}
 	

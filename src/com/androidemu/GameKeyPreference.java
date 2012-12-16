@@ -2,15 +2,18 @@ package com.androidemu;
 
 import com.androidemu.wrapper.Wrapper;
 
+import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 
 public class GameKeyPreference extends DialogPreference implements DialogInterface.OnKeyListener
 {
@@ -29,6 +32,18 @@ public class GameKeyPreference extends DialogPreference implements DialogInterfa
 
 		resources = context.getResources();
 		setPositiveButtonText(R.string.key_clear);
+		setDefaultValue(0);
+	}
+	
+	public final int getKeyValue()
+	{
+		return newValue;
+	}
+
+	public final void setKey(int key)
+	{
+		oldValue = newValue = key;
+		updateSummary();
 	}
 	
 	@Override
@@ -37,6 +52,19 @@ public class GameKeyPreference extends DialogPreference implements DialogInterfa
 		super.onPrepareDialogBuilder(builder);
 
 		builder.setMessage(R.string.press_key_prompt).setOnKeyListener(this);
+	}
+	
+	@Override
+	protected void showDialog(Bundle state)
+	{
+		super.showDialog(state);
+
+		final Dialog dialog = getDialog();
+		if (dialog != null)
+		{
+			dialog.getWindow().clearFlags(
+					WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+		}
 	}
 
 	@Override
