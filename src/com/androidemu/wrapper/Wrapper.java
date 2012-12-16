@@ -257,7 +257,7 @@ public class Wrapper
 		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		if (SDK_INT >= 11)
 		{
-			Wrapper11.View_setSystemUiVisibility(window.getDecorView());
+			Wrapper11.View_setSystemUiVisibility(window.getDecorView(), View.STATUS_BAR_HIDDEN);
 		}
 	}
 }
