@@ -10,7 +10,10 @@ import android.os.Environment;
 
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.Window;
+import android.view.WindowManager;
 
 @SuppressWarnings("deprecation")
 public class Wrapper
@@ -245,6 +248,16 @@ public class Wrapper
 				}
 				else
 					return "? - " + String.valueOf(keyCode);
+		}
+	}
+	
+	public static void setFullScreen(Window window)
+	{
+		window.requestFeature(Window.FEATURE_NO_TITLE);
+		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		if (SDK_INT >= 11)
+		{
+			Wrapper11.View_setSystemUiVisibility(window.getDecorView());
 		}
 	}
 }
