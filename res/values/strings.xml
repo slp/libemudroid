@@ -29,4 +29,7 @@
 	<string name="menu_edit">Edit</string>
 	<string name="menu_delete">Delete</string>
 	<string name="settings">Settings</string>
+	
+	<!-- Settings -->
+	<string name="enable_vibrator">Vibrate on keypress</string>
 </resources>
