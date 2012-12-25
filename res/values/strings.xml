@@ -31,5 +31,21 @@
 	<string name="settings">Settings</string>
 	
 	<!-- Settings -->
+	<!-- Virtual Keypad -->
+	<string name="vkeypad_settings">Virtual keypad settings</string>
+	<string name="vkeypad_settings_summary">Setup the touchable on-screen keypad</string>
 	<string name="enable_vibrator">Vibrate on keypress</string>
+	<string name="dpad_4way">Disable D-pad diagonals</string>
+	<string name="dpad_deadzone">D-pad dead zone</string>
+	
+	<string name="two_buttons_press">Two-buttons press</string>
+	<string name="in_between_press">In-between press</string>
+	<string name="in_between_press_summary">Press in-between two buttons to simulate simultaneous press</string>
+	<string name="point_size_press">By point size</string>
+	<string name="point_size_press_summary">Determine by touch point size (does not work on all devices)</string>
+	<string name="point_size_press_threshold">Point size threshold</string>
+	
+	<string name="appearance">Appearance</string>
+	<string name="vkeypad_size">Controls size</string>
+	<string name="vkeypad_transparency">Controls transparency</string>
 </resources>

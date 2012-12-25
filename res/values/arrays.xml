@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="vkeypad_size_entryvalues">
+		<item>large</item>
+		<item>medium</item>
+		<item>small</item>
+	</string-array>
+
+	<string-array name="vkeypad_size_entries">
+		<item>Large</item>
+		<item>Medium</item>
+		<item>Small</item>
+	</string-array>
+</resources>
