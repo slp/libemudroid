@@ -48,4 +48,6 @@
 	<string name="appearance">Appearance</string>
 	<string name="vkeypad_size">Controls size</string>
 	<string name="vkeypad_transparency">Controls transparency</string>
+	<string name="vkeypad_layout">D-pad + buttons layout</string>
+	<string name="layout_margin">Layout margin</string>
 </resources>

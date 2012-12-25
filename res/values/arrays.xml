@@ -11,4 +11,18 @@
 		<item>Medium</item>
 		<item>Small</item>
 	</string-array>
+	
+	<string-array name="vkeypad_layout_entries">
+		<item>Bottom + Bottom</item>
+		<item>Bottom + Top</item>
+		<item>Top + Bottom</item>
+		<item>Top + Top</item>
+	</string-array>
+	
+	<string-array name="vkeypad_layout_entryvalues">
+		<item>bottom_bottom</item>
+		<item>bottom_top</item>
+		<item>top_bottom</item>
+		<item>top_top</item>
+	</string-array>
 </resources>
