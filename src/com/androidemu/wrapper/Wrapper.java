@@ -3,6 +3,7 @@ package com.androidemu.wrapper;
 import java.io.File;
 
 import android.R;
+import android.app.Activity;
 import android.content.Context;
 
 import android.os.Build;
@@ -266,16 +267,6 @@ public class Wrapper
 				}
 				else
 					return "??? (№" + String.valueOf(keyCode) + ')';
-		}
-	}
-	
-	public static void setFullScreen(Window window)
-	{
-		window.requestFeature(Window.FEATURE_NO_TITLE);
-		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		if (SDK_INT >= 11)
-		{
-			Wrapper11.View_setSystemUiVisibility(window.getDecorView(), View.STATUS_BAR_HIDDEN);
 		}
 	}
 }

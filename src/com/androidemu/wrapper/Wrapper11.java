@@ -1,6 +1,8 @@
 package com.androidemu.wrapper;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
+import android.app.Activity;
 
 import android.os.Build;
 
