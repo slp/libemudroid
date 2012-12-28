@@ -31,6 +31,8 @@
 	<string name="settings">Settings</string>
 	
 	<!-- Settings -->
+	<string name="full_screen_mode">Full screen mode</string>
+	<string name="full_screen_mode_summary">Hide system notification bar</string>
 	<!-- Virtual Keypad -->
 	<string name="vkeypad_settings">Virtual keypad settings</string>
 	<string name="vkeypad_settings_summary">Setup the touchable on-screen keypad</string>
