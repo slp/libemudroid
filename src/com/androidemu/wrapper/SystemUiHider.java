@@ -97,7 +97,7 @@ public abstract class SystemUiHider
 	 */
 	public static SystemUiHider getInstance(Activity activity, View anchorView, int flags)
 	{
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (Wrapper.SDK_INT >= 11)
 		{
 			return new SystemUiHiderHoneycomb(activity, anchorView, flags);
 		}
