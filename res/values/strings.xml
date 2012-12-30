@@ -29,6 +29,7 @@
 	<string name="menu_edit">Edit</string>
 	<string name="menu_delete">Delete</string>
 	<string name="settings">Settings</string>
+	<string name="quit">Quit</string>
 	
 	<!-- Settings -->
 	<string name="full_screen_mode">Full screen mode</string>
@@ -52,4 +53,8 @@
 	<string name="vkeypad_transparency">Controls transparency</string>
 	<string name="vkeypad_layout">D-pad + buttons layout</string>
 	<string name="layout_margin">Layout margin</string>
+	
+	<!-- Misc -->
+	<string name="summary_hideNav">for Android 3 and newer</string>
+	<string name="fullscreen_hint">MENU is mapped to something, long-press BACK to show menu</string>
 </resources>
