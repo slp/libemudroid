@@ -91,6 +91,7 @@ public class SystemUiHiderHoneycomb extends SystemUiHiderBase
 	@Override
 	public void show()
 	{
+		mActivity.getActionBar().show();
 		mAnchorView.setSystemUiVisibility(mShowFlags);
 	}
 
@@ -130,9 +131,7 @@ public class SystemUiHiderHoneycomb extends SystemUiHiderBase
 				mAnchorView.setSystemUiVisibility(mShowFlags);
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
 				{
-					// Pre-Jelly Bean, we must manually show the action bar
-					// and use the old window flags API.
-					mActivity.getActionBar().show();
+					// Pre-Jelly Bean, we must use the old window flags API.
 					mActivity.getWindow().setFlags(0,
 							WindowManager.LayoutParams.FLAG_FULLSCREEN);
 				}
