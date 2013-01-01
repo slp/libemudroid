@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="summary_hideNav">Incompatible with touch controls, does not work on all devices</string>
+    <string name="summary_hideNav">Incompatible with touch controls, does not work on some devices</string>
     <string name="fullscreen_hint">Your device does not seem to have hardware MENU button, long-press back to leave fullscreen mode</string>
 </resources>
