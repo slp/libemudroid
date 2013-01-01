@@ -17,8 +17,8 @@ import android.util.Log;
 
 public class EmulatorService extends Service
 {
-	static final String ACTION_FOREGROUND = "com.androidemu.actions.FOREGROUND";
-	static final String ACTION_BACKGROUND = "com.androidemu.actions.BACKGROUND";
+	public static final String ACTION_FOREGROUND = "com.androidemu.actions.FOREGROUND";
+	public static final String ACTION_BACKGROUND = "com.androidemu.actions.BACKGROUND";
 
 	private static final String LOG_TAG = "EmulatorService";
 
