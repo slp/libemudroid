@@ -97,7 +97,7 @@ public class EmulatorService extends Service
 			try
 			{
 				Class<Activity> clazz = (Class<Activity>) Class
-						.forName("com.androidemu.EmulatorActivity");
+						.forName(intent.getStringExtra("target"));
 
 				PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 						new Intent(this, clazz), 0);
