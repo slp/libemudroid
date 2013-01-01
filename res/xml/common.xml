@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <CheckBoxPreference
-        android:defaultValue="@bool/def_fullScreen"
-        android:key="fullScreen"
-        android:title="Fullscreen" />
-    <CheckBoxPreference
-        android:defaultValue="@bool/def_hideNav"
-        android:key="hideNav"
-        android:title="Hide navigation"
-        android:summary="@string/summary_hideNav"
-        android:dependency="fullScreen"
-        android:enabled="@bool/can_hideNav"
-        android:selectable="@bool/can_hideNav"/>
+    <PreferenceCategory android:title="@string/video_settings" >
+        <CheckBoxPreference
+            android:defaultValue="@bool/def_fullScreen"
+            android:key="fullScreen"
+            android:title="Fullscreen" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/def_hideNav"
+            android:dependency="fullScreen"
+            android:enabled="@bool/can_hideNav"
+            android:key="hideNav"
+            android:selectable="@bool/can_hideNav"
+            android:summary="@string/summary_hideNav"
+            android:title="Hide navigation" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
