@@ -3,6 +3,7 @@ package com.androidemu.wrapper;
 import java.io.File;
 
 import android.R;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 
@@ -267,6 +268,22 @@ public class Wrapper
 				}
 				else
 					return "??? (№" + String.valueOf(keyCode) + ')';
+		}
+	}
+	
+	public static void displayHomeAsUp(Activity a)
+	{
+		if (SDK_INT >= 11)
+		{
+			Wrapper11.displayHomeAsUp(a);
+		}
+	}
+	
+	public static void disableHomeButton(Activity a)
+	{
+		if (SDK_INT >= 14)
+		{
+			Wrapper14.disableHomeButton(a);
 		}
 	}
 }

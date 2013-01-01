@@ -15,4 +15,9 @@ class Wrapper11
 	{
 		view.setSystemUiVisibility(visibility);
 	}
+
+	public static void displayHomeAsUp(Activity a)
+	{
+		a.getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
 }
