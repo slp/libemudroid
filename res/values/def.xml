@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- On majority of phones decorations obstruct gameplay, dfferent for large screens -->
     <bool name="def_fullScreen">true</bool>
+
+    <!-- Too buggy to use by default -->
     <bool name="def_hideNav">false</bool>
-    <bool name="can_hideNav">false</bool>
-    <bool name="def_hasTrackball">true</bool>
-    <bool name="def_hasTouch">true</bool>
-    <bool name="def_useTouch">true</bool>
+
+    <!-- Better to be safe.. -->
+    <bool name="def_soundEnabled">false</bool>
+    
+    <!-- Assume small resolution, different for hdpi devices -->
     <string name="def_scalingMode">original</string>
+
+    <!-- different for API >= 11 -->
+    <bool name="can_hideNav">false</bool>
+    
+    <!-- several kinds of controls exist, different for devices with "nonav" feature -->
+    <bool name="def_hasTrackball">true</bool>
+    
+    <!-- Assume touch, different for devices with "notouch" feature -->
+    <bool name="def_useTouch">true</bool>
+    <bool name="def_hasTouch">true</bool>
 </resources>
