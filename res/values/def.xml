@@ -3,4 +3,8 @@
     <bool name="def_fullScreen">true</bool>
     <bool name="def_hideNav">false</bool>
     <bool name="can_hideNav">false</bool>
+    <bool name="def_hasTrackball">true</bool>
+    <bool name="def_hasTouch">true</bool>
+    <bool name="def_useTouch">true</bool>
+    <string name="def_scalingMode">original</string>
 </resources>

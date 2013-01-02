@@ -102,11 +102,19 @@ public class GameActivity extends Activity
 	{
 		super.onStart();
 
+		/*
+		 * On Honeycomb and newer:
+		 * 1) No fullscreen -> fullScreenCfg = 0
+		 * 2) Fullscreen with hidden controls -> fullScreenCfg has HIDE_NAVIGATION
+		 * 3) Fullscreen with dimmed controls -> fullScreenCfg != 0
+		 * Otherwise:
+		 * 1) No fullscreen -> fullScreenCfg = 0
+		 * 2) Fullscreen -> fullScreenCfg has FULLSCREEN (HIDE_NAVIGATION contains FULLSCREEN)
+		 */
 		if (cfg.getBoolean("fullScreen", res.getBoolean(R.bool.def_fullScreen)))
 		{
-			fullScreenCfg = cfg.getBoolean("hideNav", res.getBoolean(R.bool.def_hideNav)) ?
-					SystemUiHider.FLAG_HIDE_NAVIGATION :
-						Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN : SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES;
+			fullScreenCfg = cfg.getBoolean("hideNav", res.getBoolean(R.bool.def_hideNav)) ? SystemUiHider.FLAG_HIDE_NAVIGATION :
+				Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN | SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES : SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES;
 		}
 		else
 		{
@@ -169,7 +177,7 @@ public class GameActivity extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.base, menu);
 		menu.findItem(R.id.menu_help).setIntent(
 				new Intent(this, HelpActivity.class)
 				.setData(Uri.parse("file:///android_asset/faq.html"))
@@ -224,25 +232,13 @@ public class GameActivity extends Activity
 		return false;
 	}
 	
-	@Override
+	/*@Override
 	public boolean dispatchKeyEvent(KeyEvent event)
 	{
-		if (event.getKeyCode() == lastResortShortcut
-				&& Wrapper.KeyEvent_isLongPress(event))
-		{
-			if (Wrapper.SDK_INT < 11)
-			{
-				openOptionsMenu();
-			}
-			else
-			{
-				uiHider.show();
-			}
-			return true;
-		}
+		
 
 		return super.dispatchKeyEvent(event);
-	}
+	}*/
 
 	@SuppressWarnings("deprecation")
 	@Override

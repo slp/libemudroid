@@ -32,6 +32,7 @@
 	<string name="quit">Quit</string>
 	
 	<!-- Settings -->
+	<string name="video_settings">Video settings</string>
 	<string name="full_screen_mode">Full screen mode</string>
 	<string name="full_screen_mode_summary">Hide system notification bar</string>
 	<!-- Virtual Keypad -->
@@ -56,5 +57,6 @@
 	
 	<!-- Misc -->
 	<string name="summary_hideNav">for Android 3 and newer</string>
-	<string name="fullscreen_hint">MENU is mapped to something, long-press BACK to show menu</string>
+	<string name="fullscreen_hint"><b>Menu</b> is mapped to something, long-press <b>Back</b> to show menu</string>
+	<string name="no_rom">No ROM loaded.\nPress <b>Menu</b> for more options.</string>
 </resources>
