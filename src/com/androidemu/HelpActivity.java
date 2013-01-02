@@ -24,6 +24,9 @@ public class HelpActivity extends Activity
 		
 		WebView view = new WebView(this);
 
+		// avoid unwanted link selection, when switching tabs
+		view.getSettings().setNeedInitialFocus(false);
+
 		Intent params = getIntent();
 		String[][] tabContent = new String[][] {
 				new String[] { params.getData().toString(),
