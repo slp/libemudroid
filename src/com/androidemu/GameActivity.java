@@ -46,8 +46,6 @@ public class GameActivity extends Activity
 	
 	protected static final int DIALOG_FULLSCREEN_HINT = 100;
 	
-	private int lastResortShortcut = KeyEvent.KEYCODE_BACK;
-	
 	private int fullScreenCfg;
 
 	private Handler hideHandler;
@@ -121,7 +119,7 @@ public class GameActivity extends Activity
 			fullScreenCfg = 0;
 		}
 
-		if (fullScreenCfg != 0)
+		if (fullScreenCfg != 0 && uiHider == null)
 		{
 			debug("Initializing UI hiding");
 			
@@ -147,6 +145,12 @@ public class GameActivity extends Activity
 					}
 				}
 			});
+		}
+		
+		// show stuff after setting change
+		if (uiHider != null && !uiHider.isVisible() && fullScreenCfg == 0)
+		{
+			uiHider.show();
 		}
 	}
 
