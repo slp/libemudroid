@@ -1,4 +1,4 @@
-package com.androidemu;
+package com.androidemu.priv;
 
 import android.content.Context;
 
