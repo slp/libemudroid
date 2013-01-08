@@ -1,5 +1,7 @@
-package com.androidemu;
+package com.androidemu.persistent;
 
+import com.androidemu.R;
+import com.androidemu.R.string;
 import com.androidemu.wrapper.Wrapper;
 
 import android.app.Dialog;

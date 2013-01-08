@@ -1,4 +1,8 @@
-package com.androidemu;
+package com.androidemu.persistent;
+
+import com.androidemu.R;
+import com.androidemu.R.id;
+import com.androidemu.R.layout;
 
 import android.content.Context;
 import android.content.DialogInterface;

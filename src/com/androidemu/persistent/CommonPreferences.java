@@ -1,5 +1,7 @@
-package com.androidemu;
+package com.androidemu.persistent;
 
+import com.androidemu.R;
+import com.androidemu.R.xml;
 import com.androidemu.wrapper.Wrapper;
 
 import android.content.Intent;
