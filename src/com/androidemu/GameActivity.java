@@ -14,21 +14,19 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 
+import com.androidemu.persistent.UserPrefs;
 import com.androidemu.wrapper.Wrapper;
 import com.androidemu.wrapper.SystemUiHider;
 import com.androidemu.wrapper.SystemUiHider.OnVisibilityChangeListener;
@@ -45,6 +43,7 @@ public class GameActivity extends Activity
 		}
 	}
 
+	protected static final int DIALOG_EXIT_PROMPT = 0;
 	protected static final int DIALOG_FULLSCREEN_HINT = 100;
 
 	private int fullScreenCfg;
@@ -53,7 +52,7 @@ public class GameActivity extends Activity
 	private Runnable hideRunnable;
 
 	protected SystemUiHider uiHider;
-	protected SharedPreferences cfg;
+	protected UserPrefs cfg;
 	protected Resources res;
 
 	@Override
@@ -71,8 +70,7 @@ public class GameActivity extends Activity
 		startService(serviceIntent);
 
 		res = getResources();
-		cfg = PreferenceManager.getDefaultSharedPreferences(this);
-
+		
 		if (Wrapper.SDK_INT < 11)
 		{
 			debug("Pre-Honeycomb - hiding title separately");
@@ -91,32 +89,32 @@ public class GameActivity extends Activity
 	{
 		super.onPostCreate(savedInstanceState);
 
-		if (!Wrapper.isHwMenuBtnAvailable(this)
-				&& !cfg.getBoolean("fullscreen_hint_shown", false))
+		if (!Wrapper.isHwMenuBtnAvailable(this) && !cfg.hintShown_fullScreen)
 		{
 			if (Wrapper.SDK_INT >= 11) showDialog(DIALOG_FULLSCREEN_HINT);
 		}
 	}
 
 	@Override
-	protected void onStart()
+	protected void onResume()
 	{
-		debug("onStart");
-
-		super.onStart();
-
+		debug("onResume");
+		
+		super.onResume();
+		
 		/*
-		 * On Honeycomb and newer: 1) No fullscreen -> fullScreenCfg = 0 2)
-		 * Fullscreen with hidden controls -> fullScreenCfg has HIDE_NAVIGATION
-		 * 3) Fullscreen with dimmed controls -> fullScreenCfg != 0 Otherwise:
-		 * 1) No fullscreen -> fullScreenCfg = 0 2) Fullscreen -> fullScreenCfg
-		 * has FULLSCREEN (HIDE_NAVIGATION contains FULLSCREEN)
+		 * On Honeycomb and newer:
+		 * 1) No fullscreen -> fullScreenCfg = 0
+		 * 2) Fullscreen with hidden controls -> fullScreenCfg has HIDE_NAVIGATION
+		 * 3) Fullscreen with dimmed controls -> fullScreenCfg != 0
+		 * Otherwise:
+		 * 1) No fullscreen -> fullScreenCfg = 0
+		 * 2) Fullscreen -> fullScreenCfg has FULLSCREEN (HIDE_NAVIGATION contains FULLSCREEN)
 		 */
-		if (cfg.getBoolean("fullScreen", res.getBoolean(R.bool.def_fullScreen)))
+		if (cfg.fullScreen)
 		{
-			fullScreenCfg = cfg.getBoolean("hideNav", res.getBoolean(R.bool.def_hideNav)) ? SystemUiHider.FLAG_HIDE_NAVIGATION
-					: Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN
-							| SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES
+			fullScreenCfg = cfg.hideNav ? SystemUiHider.FLAG_HIDE_NAVIGATION
+					: Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN | SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES
 							: SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES;
 		}
 		else
@@ -137,8 +135,7 @@ public class GameActivity extends Activity
 					uiHider.hide();
 				}
 			};
-			uiHider = SystemUiHider.getInstance(this, findViewById(android.R.id.content),
-					fullScreenCfg);
+			uiHider = SystemUiHider.getInstance(this, findViewById(android.R.id.content), fullScreenCfg);
 			uiHider.setup();
 
 			uiHider.setOnVisibilityChangeListener(new OnVisibilityChangeListener()
@@ -275,8 +272,7 @@ public class GameActivity extends Activity
 								if (((CheckBox) dialogView.findViewById(R.id.shown))
 										.isChecked())
 								{
-									cfg.edit().putBoolean("fullscreen_hint_shown", true)
-											.commit();
+									cfg.setHintShown();
 								}
 							}
 						}).create();
