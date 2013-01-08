@@ -286,4 +286,12 @@ public class Wrapper
 			Wrapper14.disableHomeButton(a);
 		}
 	}
+	
+	public static final void Activity_invalidateOptionsMenu(Activity activity)
+	{
+		if (SDK_INT >= 11)
+		{
+			Wrapper11.Activity_invalidateOptionsMenu(activity);
+		}
+	}
 }

@@ -20,4 +20,9 @@ class Wrapper11
 	{
 		a.getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
+
+	public static void Activity_invalidateOptionsMenu(Activity activity)
+	{
+		activity.invalidateOptionsMenu();
+	}
 }
