@@ -15,6 +15,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -61,6 +62,8 @@ public class GameActivity extends Activity
 		debug("onCreate");
 
 		super.onCreate(savedInstanceState);
+		
+		initResources();
 
 		Wrapper.disableHomeButton(this);
 
@@ -68,8 +71,6 @@ public class GameActivity extends Activity
 				EmulatorService.ACTION_FOREGROUND).putExtra("target",
 				getClass().getName());
 		startService(serviceIntent);
-
-		res = getResources();
 		
 		if (Wrapper.SDK_INT < 11)
 		{
@@ -82,11 +83,29 @@ public class GameActivity extends Activity
 
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
+	
+	private void initResources()
+	{
+		res = getResources();
+		cfg = UserPrefs.getInstance(getApplication());
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		debug("onConfigurationChanged");
+		
+		super.onConfigurationChanged(newConfig);
+		
+		initResources();
+	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
 	{
+		debug("onPostCreate");
+		
 		super.onPostCreate(savedInstanceState);
 
 		if (!Wrapper.isHwMenuBtnAvailable(this) && !cfg.hintShown_fullScreen)
