@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -43,9 +44,9 @@ public class GameActivity extends Activity
 			logger.setLevel(Level.INFO);
 		}
 	}
-	
+
 	protected static final int DIALOG_FULLSCREEN_HINT = 100;
-	
+
 	private int fullScreenCfg;
 
 	private Handler hideHandler;
@@ -58,13 +59,15 @@ public class GameActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		debug("onCreate");
+
 		super.onCreate(savedInstanceState);
-		
+
 		Wrapper.disableHomeButton(this);
-		
-		Intent serviceIntent = new Intent(this, EmulatorService.class)
-			.setAction(EmulatorService.ACTION_FOREGROUND)
-			.putExtra("target", getClass().getName());
+
+		Intent serviceIntent = new Intent(this, EmulatorService.class).setAction(
+				EmulatorService.ACTION_FOREGROUND).putExtra("target",
+				getClass().getName());
 		startService(serviceIntent);
 
 		res = getResources();
@@ -73,56 +76,58 @@ public class GameActivity extends Activity
 		if (Wrapper.SDK_INT < 11)
 		{
 			debug("Pre-Honeycomb - hiding title separately");
-			
+
 			getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		}
-		else debug("API >= 11 => title = ActionBar");
+		else
+			debug("API >= 11 => title = ActionBar");
 
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
 	{
 		super.onPostCreate(savedInstanceState);
-		
-		if (!Wrapper.isHwMenuBtnAvailable(this) &&
-				!cfg.getBoolean("fullscreen_hint_shown", false))
+
+		if (!Wrapper.isHwMenuBtnAvailable(this)
+				&& !cfg.getBoolean("fullscreen_hint_shown", false))
 		{
-			if (Wrapper.SDK_INT >= 11)
-				showDialog(DIALOG_FULLSCREEN_HINT);
+			if (Wrapper.SDK_INT >= 11) showDialog(DIALOG_FULLSCREEN_HINT);
 		}
 	}
 
 	@Override
 	protected void onStart()
 	{
+		debug("onStart");
+
 		super.onStart();
 
 		/*
-		 * On Honeycomb and newer:
-		 * 1) No fullscreen -> fullScreenCfg = 0
-		 * 2) Fullscreen with hidden controls -> fullScreenCfg has HIDE_NAVIGATION
-		 * 3) Fullscreen with dimmed controls -> fullScreenCfg != 0
-		 * Otherwise:
-		 * 1) No fullscreen -> fullScreenCfg = 0
-		 * 2) Fullscreen -> fullScreenCfg has FULLSCREEN (HIDE_NAVIGATION contains FULLSCREEN)
+		 * On Honeycomb and newer: 1) No fullscreen -> fullScreenCfg = 0 2)
+		 * Fullscreen with hidden controls -> fullScreenCfg has HIDE_NAVIGATION
+		 * 3) Fullscreen with dimmed controls -> fullScreenCfg != 0 Otherwise:
+		 * 1) No fullscreen -> fullScreenCfg = 0 2) Fullscreen -> fullScreenCfg
+		 * has FULLSCREEN (HIDE_NAVIGATION contains FULLSCREEN)
 		 */
 		if (cfg.getBoolean("fullScreen", res.getBoolean(R.bool.def_fullScreen)))
 		{
-			fullScreenCfg = cfg.getBoolean("hideNav", res.getBoolean(R.bool.def_hideNav)) ? SystemUiHider.FLAG_HIDE_NAVIGATION :
-				Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN | SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES : SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES;
+			fullScreenCfg = cfg.getBoolean("hideNav", res.getBoolean(R.bool.def_hideNav)) ? SystemUiHider.FLAG_HIDE_NAVIGATION
+					: Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN
+							| SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES
+							: SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES;
 		}
 		else
 		{
 			fullScreenCfg = 0;
 		}
 
-		if (fullScreenCfg != 0 && uiHider == null)
+		if (fullScreenCfg != 0)
 		{
 			debug("Initializing UI hiding");
-			
+
 			hideHandler = new Handler();
 			hideRunnable = new Runnable()
 			{
@@ -132,8 +137,10 @@ public class GameActivity extends Activity
 					uiHider.hide();
 				}
 			};
-			uiHider = SystemUiHider.getInstance(this, findViewById(android.R.id.content), fullScreenCfg);
+			uiHider = SystemUiHider.getInstance(this, findViewById(android.R.id.content),
+					fullScreenCfg);
 			uiHider.setup();
+
 			uiHider.setOnVisibilityChangeListener(new OnVisibilityChangeListener()
 			{
 				@Override
@@ -146,9 +153,9 @@ public class GameActivity extends Activity
 				}
 			});
 		}
-		
+
 		// show stuff after setting change
-		if (uiHider != null && !uiHider.isVisible() && fullScreenCfg == 0)
+		if (uiHider != null && fullScreenCfg == 0)
 		{
 			uiHider.show();
 		}
@@ -159,12 +166,12 @@ public class GameActivity extends Activity
 	{
 		// nothing
 	}
-	
+
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
 	{
 		super.onWindowFocusChanged(hasFocus);
-		
+
 		if (hasFocus)
 		{
 			if (fullScreenCfg != 0)
@@ -181,18 +188,21 @@ public class GameActivity extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
+		debug("onCreateOptionsMenu");
+
 		getMenuInflater().inflate(R.menu.base, menu);
 		menu.findItem(R.id.menu_help).setIntent(
-				new Intent(this, HelpActivity.class)
-				.setData(Uri.parse("file:///android_asset/faq.html"))
-				.putExtra("", "FAQ"));
-		
+				new Intent(this, HelpActivity.class).setData(
+						Uri.parse("file:///android_asset/faq.html")).putExtra("", "FAQ"));
+
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	protected void onPause()
 	{
+		debug("onPause");
+
 		if (uiHider != null)
 		{
 			uiHider.setOnVisibilityChangeListener(null);
@@ -205,44 +215,44 @@ public class GameActivity extends Activity
 
 		super.onPause();
 	}
-	
+
 	@Override
 	protected void onDestroy()
 	{
+		debug("onDestroy");
+
 		stopService(new Intent(this, EmulatorService.class));
-		
+
 		super.onDestroy();
 	}
-	
+
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
-		switch(keyCode)
+		switch (keyCode)
 		{
 			case KeyEvent.KEYCODE_BACK:
-				if (Wrapper.SDK_INT <= 5 && event.getRepeatCount() == 0)
-					onBackPressed();
+				if (Wrapper.SDK_INT <= 5 && event.getRepeatCount() == 0) onBackPressed();
 			case KeyEvent.KEYCODE_CAMERA:
 				return true;
 			default:
 				return super.onKeyDown(keyCode, event);
 		}
 	}
-	
+
 	@Override
 	public boolean onSearchRequested()
 	{
 		return false;
 	}
-	
-	/*@Override
-	public boolean dispatchKeyEvent(KeyEvent event)
-	{
-		
 
-		return super.dispatchKeyEvent(event);
-	}*/
+	/*
+	 * @Override public boolean dispatchKeyEvent(KeyEvent event) {
+	 * 
+	 * 
+	 * return super.dispatchKeyEvent(event); }
+	 */
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -252,27 +262,29 @@ public class GameActivity extends Activity
 		{
 			case DIALOG_FULLSCREEN_HINT:
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				
-				final View dialogView = getLayoutInflater().inflate(R.layout.dialog_hint, null);
-				
-				return builder.setView(dialogView)
-				.setCancelable(false)
-				.setPositiveButton(android.R.string.ok, new OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						if (((CheckBox)dialogView.findViewById(R.id.shown)).isChecked())
+
+				final View dialogView = getLayoutInflater().inflate(R.layout.dialog_hint,
+						null);
+
+				return builder.setView(dialogView).setCancelable(false)
+						.setPositiveButton(android.R.string.ok, new OnClickListener()
 						{
-							cfg.edit().putBoolean("fullscreen_hint_shown", true).commit();
-						}
-					}
-				}).create();
+							@Override
+							public void onClick(DialogInterface dialog, int which)
+							{
+								if (((CheckBox) dialogView.findViewById(R.id.shown))
+										.isChecked())
+								{
+									cfg.edit().putBoolean("fullscreen_hint_shown", true)
+											.commit();
+								}
+							}
+						}).create();
 		}
-		
+
 		return super.onCreateDialog(id);
 	}
-	
+
 	protected void hideUiDelayed()
 	{
 		hideHandler.removeCallbacks(hideRunnable);
@@ -290,7 +302,7 @@ public class GameActivity extends Activity
 		if (!file.exists())
 		{
 			debug(file.getPath() + " not found - extracting");
-			
+
 			InputStream in = null;
 			OutputStream out = null;
 
@@ -324,11 +336,12 @@ public class GameActivity extends Activity
 				}
 			}
 		}
-		else debug(file.getPath() + " already exist - skipped");
+		else
+			debug(file.getPath() + " already exist - skipped");
 
 		return true;
 	}
-	
+
 	protected static void debug(String logMessage)
 	{
 		if (BuildConfig.DEBUG)
@@ -336,7 +349,7 @@ public class GameActivity extends Activity
 			logger.info(logMessage);
 		}
 	}
-	
+
 	protected static void log(Exception e, String logMessage)
 	{
 		logger.severe(logMessage);
