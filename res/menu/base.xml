@@ -11,7 +11,7 @@
         android:id="@+id/menu_help"
         android:icon="@android:drawable/ic_menu_help"
         android:title="@string/help"
-        android:orderInCategory="21"
+        android:orderInCategory="90"
         android:showAsAction="ifRoom"/>
 
 </menu>
