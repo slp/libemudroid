@@ -108,9 +108,10 @@ public class GameActivity extends Activity
 		
 		super.onPostCreate(savedInstanceState);
 
-		if (!Wrapper.isHwMenuBtnAvailable(this) && !cfg.hintShown_fullScreen)
+		if (Wrapper.SDK_INT >= 11 && !Wrapper.isHwMenuBtnAvailable(this)
+				&& !cfg.hintShown_fullScreen)
 		{
-			if (Wrapper.SDK_INT >= 11) showDialog(DIALOG_FULLSCREEN_HINT);
+			showDialog(DIALOG_FULLSCREEN_HINT);
 		}
 	}
 
