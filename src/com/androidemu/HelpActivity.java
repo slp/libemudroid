@@ -9,11 +9,11 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.androidemu.wrapper.Wrapper;
-import com.androidemu.wrapper.TabAdapterCompat;
+import com.androidemu.wrapper.TabbedHelpViewFactory;
 
 public class HelpActivity extends Activity
 {
-	TabAdapterCompat tac;
+	TabbedHelpViewFactory tac;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -21,32 +21,24 @@ public class HelpActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		Wrapper.displayHomeAsUp(this);
-		
-		WebView view = new WebView(this);
 
-		// avoid unwanted link selection, when switching tabs
-		view.getSettings().setNeedInitialFocus(false);
-
-		Intent params = getIntent();
-		String[][] tabContent = new String[][] {
-				new String[] { params.getData().toString(),
-						"file:///android_asset/gpl.html" },
-				new String[] { params.getStringExtra(""), "License" } };
-		tac = TabAdapterCompat.newInstance(this, view, tabContent);
-
-		setContentView(tac.getView());
-		
-		tac.selectTab(savedInstanceState == null? 0 : savedInstanceState.getInt("currentTab"));
+		setContentView(TabbedHelpViewFactory.newTabbedHelpView(
+				this,
+				new String[][]
+				{
+					new String[]
+					{
+						"file:///android_asset/faq.html",
+						"FAQ"
+					},
+					new String[]
+					{
+						"file:///android_asset/gpl.html",
+						"License"
+					}
+				}));
 	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		outState.putInt("currentTab", tac.getSelected());
 
-		super.onSaveInstanceState(outState);
-	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -55,11 +47,11 @@ public class HelpActivity extends Activity
 			case android.R.id.home:
 				if (Wrapper.SDK_INT < 16)
 				{
-					// Game activity is system-global, so
-					// FLAG_ACTIVITY_CLEAR_TOP is not needed
+					// Game activity is system-global, so FLAG_ACTIVITY_CLEAR_TOP is not needed
 					PackageManager pm = getPackageManager();
-				    Intent intent = pm.getLaunchIntentForPackage(getPackageName()).cloneFilter();
-				    startActivity(intent);
+					Intent intent = pm.getLaunchIntentForPackage(getPackageName())
+							.cloneFilter();
+					startActivity(intent);
 					return true;
 				}
 			default:
