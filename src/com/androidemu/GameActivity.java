@@ -157,6 +157,37 @@ public class GameActivity extends Activity
 			uiHider.show();
 		}
 	}
+	
+	@Override
+	public boolean onMenuOpened(int featureId, Menu menu)
+	{
+		if (Wrapper.SDK_INT < 11 && fullScreenCfg != 0)
+		{
+			uiHider.show();
+			hideHandler.removeCallbacks(hideRunnable);
+		}
+		
+		return super.onMenuOpened(featureId, menu);
+	}
+	
+	@Override
+	public void onOptionsMenuClosed(Menu menu)
+	{
+		if (Wrapper.SDK_INT < 11 && fullScreenCfg != 0)
+		{
+			uiHider.hide();
+		}
+
+		super.onOptionsMenuClosed(menu);
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		debug("onStart");
+
+		super.onStart();
+	}
 
 	@Override
 	public void onBackPressed()
