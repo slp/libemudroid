@@ -21,4 +21,7 @@
     <!-- Assume touch, different for devices with "notouch" feature -->
     <bool name="def_useTouch">true</bool>
     <bool name="def_hasTouch">true</bool>
+    
+    <!-- Doing otherwise by default causes to big mess -->
+    <bool name="def_autoResume">true</bool>
 </resources>

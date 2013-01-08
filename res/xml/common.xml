@@ -15,5 +15,13 @@
             android:summary="@string/summary_hideNav"
             android:title="Hide navigation" />
     </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Misc settings" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="autoResume"
+            android:title="Resume game, on focus gain"
+            android:summary="Some Android versions are rumored to behave badly with this on"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>
