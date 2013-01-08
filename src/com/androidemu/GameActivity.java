@@ -116,6 +116,16 @@ public class GameActivity extends Activity
 	}
 
 	@Override
+	protected void onRestart()
+	{
+		super.onRestart();
+		
+		resumeGame();
+		
+		showDialog(DIALOG_EXIT_PROMPT);
+	}
+	
+	@Override
 	protected void onResume()
 	{
 		debug("onResume");
@@ -260,6 +270,8 @@ public class GameActivity extends Activity
 		{
 			hideHandler.removeCallbacks(hideRunnable);
 		}
+		
+		pauseGame();
 
 		super.onPause();
 	}
@@ -342,6 +354,16 @@ public class GameActivity extends Activity
 
 			hideHandler.postDelayed(hideRunnable, 3000);
 		}
+	}
+	
+	protected void pauseGame()
+	{
+		Wrapper.Activity_invalidateOptionsMenu(this);
+	}
+	
+	protected void resumeGame()
+	{
+		Wrapper.Activity_invalidateOptionsMenu(this);
 	}
 
 	protected boolean extractAsset(File file)
