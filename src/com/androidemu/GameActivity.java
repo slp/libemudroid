@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
@@ -32,7 +34,7 @@ import com.androidemu.wrapper.Wrapper;
 import com.androidemu.wrapper.SystemUiHider;
 import com.androidemu.wrapper.SystemUiHider.OnVisibilityChangeListener;
 
-public class GameActivity extends Activity
+public class GameActivity extends Activity implements OnCancelListener
 {
 	private static final Logger logger;
 	static
@@ -43,7 +45,7 @@ public class GameActivity extends Activity
 			logger.setLevel(Level.INFO);
 		}
 	}
-
+	
 	protected static final int DIALOG_EXIT_PROMPT = 0;
 	protected static final int DIALOG_FULLSCREEN_HINT = 100;
 
@@ -55,6 +57,9 @@ public class GameActivity extends Activity
 	protected SystemUiHider uiHider;
 	protected UserPrefs cfg;
 	protected Resources res;
+	
+	protected boolean isGamePaused = false;
+	protected boolean shunDangerousKeys = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -114,15 +119,19 @@ public class GameActivity extends Activity
 			showDialog(DIALOG_FULLSCREEN_HINT);
 		}
 	}
-
+	
 	@Override
-	protected void onRestart()
+	@Deprecated
+	protected void onPrepareDialog(int id, Dialog dialog)
 	{
-		super.onRestart();
-		
-		resumeGame();
-		
-		showDialog(DIALOG_EXIT_PROMPT);
+		switch (id)
+		{
+			case DIALOG_EXIT_PROMPT:
+				pauseGame();
+				break;
+		}
+			
+		super.onPrepareDialog(id, dialog);
 	}
 	
 	@Override
@@ -131,6 +140,8 @@ public class GameActivity extends Activity
 		debug("onResume");
 		
 		super.onResume();
+		
+		cfg = UserPrefs.getInstance(getApplication());
 		
 		/*
 		 * On Honeycomb and newer:
@@ -191,10 +202,15 @@ public class GameActivity extends Activity
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu)
 	{
-		if (Wrapper.SDK_INT < 11 && fullScreenCfg != 0)
+		if (Wrapper.SDK_INT < 11)
 		{
-			uiHider.show();
-			hideHandler.removeCallbacks(hideRunnable);
+			pauseGame();
+			
+			if (fullScreenCfg != 0)
+			{
+				uiHider.show();
+				hideHandler.removeCallbacks(hideRunnable);
+			}
 		}
 		
 		return super.onMenuOpened(featureId, menu);
@@ -207,6 +223,8 @@ public class GameActivity extends Activity
 		{
 			uiHider.hide();
 		}
+		
+		resumeGame();
 
 		super.onOptionsMenuClosed(menu);
 	}
@@ -219,19 +237,58 @@ public class GameActivity extends Activity
 		super.onStart();
 	}
 
+	@SuppressLint("NewApi")
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		debug("onKeyDown, keyCode=" + keyCode);
+		
+		switch (keyCode)
+		{
+			case KeyEvent.KEYCODE_CAMERA:
+				if (shunDangerousKeys)
+				{
+					debug("Not wanted, shunning");
+					
+					return true;
+				}
+			case KeyEvent.KEYCODE_BACK:
+				if (Wrapper.SDK_INT < 5 && event.getRepeatCount() == 0 && shunDangerousKeys)
+				{
+					debug("API < 5 => legacy BACK handling");
+					
+					onBackPressed();
+					return true;
+				}
+			default:
+				return super.onKeyDown(keyCode, event);
+		}
+	}
+	
 	@Override
 	public void onBackPressed()
 	{
-		// nothing
+		// nothing here
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
 	{
+		debug("onWindowFocusChanged: hasFocus=" + hasFocus);
+		
 		super.onWindowFocusChanged(hasFocus);
 
 		if (hasFocus)
 		{
+			if (isGamePaused)
+			{
+				showDialog(DIALOG_EXIT_PROMPT);
+			}
+			else
+			{
+				resumeGame();
+			}
+			
 			if (fullScreenCfg != 0)
 			{
 				hideUiDelayed();
@@ -240,6 +297,10 @@ public class GameActivity extends Activity
 			{
 				uiHider.show();
 			}
+		}
+		else
+		{
+			pauseGame();
 		}
 	}
 
@@ -285,20 +346,11 @@ public class GameActivity extends Activity
 
 		super.onDestroy();
 	}
-
-	@SuppressLint("NewApi")
+	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)
+	public void onCancel(DialogInterface dialog)
 	{
-		switch (keyCode)
-		{
-			case KeyEvent.KEYCODE_BACK:
-				if (Wrapper.SDK_INT <= 5 && event.getRepeatCount() == 0) onBackPressed();
-			case KeyEvent.KEYCODE_CAMERA:
-				return true;
-			default:
-				return super.onKeyDown(keyCode, event);
-		}
+		resumeGame();
 	}
 
 	@Override
@@ -306,13 +358,6 @@ public class GameActivity extends Activity
 	{
 		return false;
 	}
-
-	/*
-	 * @Override public boolean dispatchKeyEvent(KeyEvent event) {
-	 * 
-	 * 
-	 * return super.dispatchKeyEvent(event); }
-	 */
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -358,11 +403,19 @@ public class GameActivity extends Activity
 	
 	protected void pauseGame()
 	{
+		debug("Pause requested");
+		
+		isGamePaused = true;
+		
 		Wrapper.Activity_invalidateOptionsMenu(this);
 	}
 	
 	protected void resumeGame()
 	{
+		debug("Resume requested");
+		
+		isGamePaused = false;
+		
 		Wrapper.Activity_invalidateOptionsMenu(this);
 	}
 
