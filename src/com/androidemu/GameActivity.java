@@ -89,22 +89,14 @@ public class GameActivity extends Activity implements OnCancelListener
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 	
-	private void initResources()
-	{
-		res = getResources();
-		cfg = UserPrefs.getInstance(getApplication());
-	}
-
 	@Override
-	public void onConfigurationChanged(Configuration newConfig)
+	protected void onStart()
 	{
-		debug("onConfigurationChanged");
-		
-		super.onConfigurationChanged(newConfig);
-		
-		initResources();
-	}
+		debug("onStart");
 
+		super.onStart();
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
@@ -118,20 +110,6 @@ public class GameActivity extends Activity implements OnCancelListener
 		{
 			showDialog(DIALOG_FULLSCREEN_HINT);
 		}
-	}
-	
-	@Override
-	@Deprecated
-	protected void onPrepareDialog(int id, Dialog dialog)
-	{
-		switch (id)
-		{
-			case DIALOG_EXIT_PROMPT:
-				pauseGame();
-				break;
-		}
-			
-		super.onPrepareDialog(id, dialog);
 	}
 	
 	@Override
@@ -193,10 +171,56 @@ public class GameActivity extends Activity implements OnCancelListener
 		}
 
 		// show stuff after setting change
-		if (uiHider != null && fullScreenCfg == 0)
+		if (uiHider != null && !uiHider.isVisible())
 		{
 			uiHider.show();
 		}
+	}
+	
+	@SuppressLint("NewApi")
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		debug("onKeyDown, keyCode=" + keyCode);
+		
+		switch (keyCode)
+		{
+			case KeyEvent.KEYCODE_CAMERA:
+				if (shunDangerousKeys)
+				{
+					debug("Not wanted, shunning");
+					
+					return true;
+				}
+			case KeyEvent.KEYCODE_BACK:
+				if (Wrapper.SDK_INT < 5 && event.getRepeatCount() == 0 && shunDangerousKeys)
+				{
+					debug("API < 5 => legacy BACK handling");
+					
+					onBackPressed();
+					return true;
+				}
+				else if (Wrapper.SDK_INT >= 11 && cfg.fullScreen)
+				{
+					debug("API >= 11 & fullscreen is enabled, skipping other BACK handling");
+					return true;
+				}
+			default:
+				return super.onKeyDown(keyCode, event);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		debug("onCreateOptionsMenu");
+
+		getMenuInflater().inflate(R.menu.base, menu);
+		menu.findItem(R.id.menu_help).setIntent(
+				new Intent(this, HelpActivity.class).setData(
+						Uri.parse("file:///android_asset/faq.html")).putExtra("", "FAQ"));
+
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
@@ -228,41 +252,64 @@ public class GameActivity extends Activity implements OnCancelListener
 
 		super.onOptionsMenuClosed(menu);
 	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		switch (id)
+		{
+			case DIALOG_FULLSCREEN_HINT:
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+				final View dialogView = getLayoutInflater().inflate(R.layout.dialog_hint,
+						null);
+
+				return builder.setView(dialogView).setCancelable(false)
+						.setPositiveButton(android.R.string.ok, new OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int which)
+							{
+								if (((CheckBox) dialogView.findViewById(R.id.shown))
+										.isChecked())
+								{
+									cfg.setHintShown();
+								}
+							}
+						}).create();
+		}
+
+		return super.onCreateDialog(id);
+	}
 	
 	@Override
-	protected void onStart()
+	@Deprecated
+	protected void onPrepareDialog(int id, Dialog dialog)
 	{
-		debug("onStart");
-
-		super.onStart();
-	}
-
-	@SuppressLint("NewApi")
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)
-	{
-		debug("onKeyDown, keyCode=" + keyCode);
+		debug("onPrepareDialog");
 		
-		switch (keyCode)
+		switch (id)
 		{
-			case KeyEvent.KEYCODE_CAMERA:
-				if (shunDangerousKeys)
-				{
-					debug("Not wanted, shunning");
-					
-					return true;
-				}
-			case KeyEvent.KEYCODE_BACK:
-				if (Wrapper.SDK_INT < 5 && event.getRepeatCount() == 0 && shunDangerousKeys)
-				{
-					debug("API < 5 => legacy BACK handling");
-					
-					onBackPressed();
-					return true;
-				}
-			default:
-				return super.onKeyDown(keyCode, event);
+			case DIALOG_EXIT_PROMPT:
+				dialog.setCancelable(!isGamePaused);
+				pauseGame();
+				break;
 		}
+			
+		super.onPrepareDialog(id, dialog);
+	}
+	
+	@Override
+	public void onCancel(DialogInterface dialog)
+	{
+		resumeGame();
+	}
+	
+	@Override
+	public boolean onSearchRequested()
+	{
+		return false;
 	}
 	
 	@Override
@@ -305,19 +352,6 @@ public class GameActivity extends Activity implements OnCancelListener
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		debug("onCreateOptionsMenu");
-
-		getMenuInflater().inflate(R.menu.base, menu);
-		menu.findItem(R.id.menu_help).setIntent(
-				new Intent(this, HelpActivity.class).setData(
-						Uri.parse("file:///android_asset/faq.html")).putExtra("", "FAQ"));
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
 	protected void onPause()
 	{
 		debug("onPause");
@@ -346,47 +380,21 @@ public class GameActivity extends Activity implements OnCancelListener
 
 		super.onDestroy();
 	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		debug("onConfigurationChanged");
+		
+		super.onConfigurationChanged(newConfig);
+		
+		initResources();
+	}
 	
-	@Override
-	public void onCancel(DialogInterface dialog)
+	private void initResources()
 	{
-		resumeGame();
-	}
-
-	@Override
-	public boolean onSearchRequested()
-	{
-		return false;
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	protected Dialog onCreateDialog(int id)
-	{
-		switch (id)
-		{
-			case DIALOG_FULLSCREEN_HINT:
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-				final View dialogView = getLayoutInflater().inflate(R.layout.dialog_hint,
-						null);
-
-				return builder.setView(dialogView).setCancelable(false)
-						.setPositiveButton(android.R.string.ok, new OnClickListener()
-						{
-							@Override
-							public void onClick(DialogInterface dialog, int which)
-							{
-								if (((CheckBox) dialogView.findViewById(R.id.shown))
-										.isChecked())
-								{
-									cfg.setHintShown();
-								}
-							}
-						}).create();
-		}
-
-		return super.onCreateDialog(id);
+		res = getResources();
+		cfg = UserPrefs.getInstance(getApplication());
 	}
 
 	protected void hideUiDelayed()
