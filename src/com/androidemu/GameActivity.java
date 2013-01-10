@@ -95,6 +95,8 @@ public class GameActivity extends Activity implements OnCancelListener
 		debug("onStart");
 
 		super.onStart();
+		
+		cfg = UserPrefs.getInstance(getApplication());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -118,8 +120,6 @@ public class GameActivity extends Activity implements OnCancelListener
 		debug("onResume");
 		
 		super.onResume();
-		
-		cfg = UserPrefs.getInstance(getApplication());
 		
 		/*
 		 * On Honeycomb and newer:
