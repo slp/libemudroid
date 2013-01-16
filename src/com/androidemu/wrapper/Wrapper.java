@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -292,6 +293,14 @@ public class Wrapper
 		if (SDK_INT >= 11)
 		{
 			Wrapper11.Activity_invalidateOptionsMenu(activity);
+		}
+	}
+	
+	public static final void MenuItem_setShowAsAction(MenuItem item, boolean show)
+	{
+		if (SDK_INT >= 11)
+		{
+			Wrapper11.MenuItem_setShowAsAction(item, show);
 		}
 	}
 }

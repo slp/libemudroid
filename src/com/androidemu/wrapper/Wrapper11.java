@@ -6,6 +6,7 @@ import android.app.Activity;
 
 import android.os.Build;
 
+import android.view.MenuItem;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -24,5 +25,10 @@ class Wrapper11
 	public static void Activity_invalidateOptionsMenu(Activity activity)
 	{
 		activity.invalidateOptionsMenu();
+	}
+
+	public static void MenuItem_setShowAsAction(MenuItem item, boolean show)
+	{
+		item.setShowAsAction(show ? MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT : MenuItem.SHOW_AS_ACTION_NEVER);
 	}
 }
