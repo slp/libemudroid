@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="summary_hideNav">Incompatible with touch controls, does not work on some devices</string>
-    <string name="fullscreen_hint">Your device does not seem to have hardware <b>Menu</b> button, long-press <b>Back</b> to leave fullscreen mode</string>
-	<string name="no_rom">No ROM loaded. Select <b>Open</b> to load one.</string>
+    <string name="summary_autoResume">May result in unwanted resumes</string>
+    <string name="fullscreen_hint">Device does not seem to have hardware <b>Menu</b> button, long-press <b>Back</b> to leave fullscreen mode</string>
+	<string name="no_rom">No ROM loaded. Select <b>Open</b> to load one</string>
 </resources>

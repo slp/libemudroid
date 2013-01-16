@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="Common settings" >
+    <PreferenceCategory android:title="@string/other" android:order="100">
         <CheckBoxPreference
             android:defaultValue="@bool/def_fullScreen"
             android:key="fullScreen"
-            android:title="Fullscreen" />
+            android:title="@string/fullscreen" />
         <CheckBoxPreference
             android:defaultValue="@bool/def_hideNav"
             android:dependency="fullScreen"
@@ -13,15 +13,12 @@
             android:key="hideNav"
             android:selectable="@bool/can_hideNav"
             android:summary="@string/summary_hideNav"
-            android:title="Hide navigation" />
-    </PreferenceCategory>
-    
-    <PreferenceCategory android:title="Misc settings" >
+            android:title="@string/hide_navigation" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="autoResume"
-            android:title="Resume game, on focus gain"
-            android:summary="Some Android versions are rumored to behave badly with this on"/>
+            android:title="@string/always_resume"
+            android:summary="@string/summary_autoResume"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

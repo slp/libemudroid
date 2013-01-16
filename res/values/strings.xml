@@ -32,9 +32,16 @@
 	<string name="quit">Quit</string>
 	
 	<!-- Settings -->
+	<string name="other">Other</string>
+	<string name="fullscreen">Fullscreen</string>
+	<string name="hide_navigation">Hide navigation</string>
+	<string name="summary_hideNav">for Android 3 and newer</string>
+	<string name="always_resume">Always resume on focus gain</string>
+	<string name="summary_autoResume"></string>
+	<!-- Sound -->
+	<string name="sound_volume">Sound volume</string>
+	<!-- Video -->
 	<string name="video_settings">Video settings</string>
-	<string name="full_screen_mode">Full screen mode</string>
-	<string name="full_screen_mode_summary">Hide system notification bar</string>
 	<!-- Virtual Keypad -->
 	<string name="vkeypad_settings">Virtual keypad settings</string>
 	<string name="vkeypad_settings_summary">Setup the touchable on-screen keypad</string>
@@ -56,7 +63,6 @@
 	<string name="layout_margin">Layout margin</string>
 	
 	<!-- Misc -->
-	<string name="summary_hideNav">for Android 3 and newer</string>
 	<string name="fullscreen_hint"><b>Menu</b> is mapped to something, long-press <b>Back</b> to show menu</string>
 	<string name="no_rom">No ROM loaded.\nPress <b>Menu</b> for more options.</string>
 </resources>
