@@ -14,7 +14,6 @@ import com.androidemu.wrapper.Wrapper;
 
 public class Emulator
 {
-
 	public interface OnFrameDrawnListener
 	{
 		void onFrameDrawn(Canvas canvas);

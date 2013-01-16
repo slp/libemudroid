@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
@@ -34,7 +33,7 @@ import com.androidemu.wrapper.Wrapper;
 import com.androidemu.wrapper.SystemUiHider;
 import com.androidemu.wrapper.SystemUiHider.OnVisibilityChangeListener;
 
-public class GameActivity extends Activity implements OnCancelListener
+public class GameActivity extends Activity implements OnDismissListener
 {
 	private static final Logger logger;
 	static
@@ -55,6 +54,10 @@ public class GameActivity extends Activity implements OnCancelListener
 	private Runnable hideRunnable;
 	
 	private UserPrefs prefs;
+	
+	// Some Android versions have fairly broken
+	// handling of this
+	private boolean menuShown;
 	
 	protected SystemUiHider uiHider;
 	protected Resources res;
@@ -225,8 +228,26 @@ public class GameActivity extends Activity implements OnCancelListener
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		debug("onPrepareOptionsMenu");
+		
+		if (Wrapper.SDK_INT < 11)
+		{
+			pauseGame();
+		}
+		
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
 	public boolean onMenuOpened(int featureId, Menu menu)
 	{
+		debug("onMenuOpened");
+		
+		// there is no way menu can be hidden at this stage
+		menuShown = true;
+		
 		if (Wrapper.SDK_INT < 11)
 		{
 			pauseGame();
@@ -244,6 +265,8 @@ public class GameActivity extends Activity implements OnCancelListener
 	@Override
 	public void onOptionsMenuClosed(Menu menu)
 	{
+		debug("onOptionsMenuClosed");
+		
 		if (Wrapper.SDK_INT < 11 && fullScreenCfg != 0)
 		{
 			uiHider.hide();
@@ -258,6 +281,8 @@ public class GameActivity extends Activity implements OnCancelListener
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
+		debug("onCreateDialog");
+		
 		switch (id)
 		{
 			case DIALOG_FULLSCREEN_HINT:
@@ -294,6 +319,8 @@ public class GameActivity extends Activity implements OnCancelListener
 		{
 			case DIALOG_EXIT_PROMPT:
 				dialog.setCancelable(!isGamePaused);
+			default:
+				dialog.setOnDismissListener(this);
 				pauseGame();
 				break;
 		}
@@ -302,7 +329,7 @@ public class GameActivity extends Activity implements OnCancelListener
 	}
 	
 	@Override
-	public void onCancel(DialogInterface dialog)
+	public void onDismiss(DialogInterface dialog)
 	{
 		resumeGame();
 	}
@@ -328,7 +355,7 @@ public class GameActivity extends Activity implements OnCancelListener
 
 		if (hasFocus)
 		{
-			if (isGamePaused)
+			if (isGamePaused && !menuShown)
 			{
 				showDialog(DIALOG_EXIT_PROMPT);
 			}
@@ -351,12 +378,22 @@ public class GameActivity extends Activity implements OnCancelListener
 			pauseGame();
 		}
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		resumeGame();
+	}
 
 	@Override
 	protected void onPause()
 	{
 		debug("onPause");
 
+		// at this stage nobody cares if it is shown or not -
+		// when activity resumes game will be paused anyway
+		menuShown = false;
+		
 		if (uiHider != null)
 		{
 			uiHider.setOnVisibilityChangeListener(null);
@@ -423,7 +460,8 @@ public class GameActivity extends Activity implements OnCancelListener
 	{
 		debug("Resume requested");
 		
-		isGamePaused = false;
+		// there is no way menu can be shown at this stage
+		isGamePaused = menuShown = false;
 		
 		Wrapper.Activity_invalidateOptionsMenu(this);
 	}
