@@ -55,7 +55,7 @@ public class GameActivity extends Activity implements OnCancelListener
 	private Runnable hideRunnable;
 
 	protected SystemUiHider uiHider;
-	protected UserPrefs cfg;
+	protected UserPrefs prefs;
 	protected Resources res;
 	
 	protected boolean isGamePaused = false;
@@ -96,7 +96,7 @@ public class GameActivity extends Activity implements OnCancelListener
 
 		super.onStart();
 		
-		cfg = UserPrefs.getInstance(getApplication());
+		prefs = UserPrefs.getInstance(getApplication());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -108,7 +108,7 @@ public class GameActivity extends Activity implements OnCancelListener
 		super.onPostCreate(savedInstanceState);
 
 		if (Wrapper.SDK_INT >= 11 && !Wrapper.isHwMenuBtnAvailable(this)
-				&& !cfg.hintShown_fullScreen)
+				&& !prefs.hintShown_fullScreen)
 		{
 			showDialog(DIALOG_FULLSCREEN_HINT);
 		}
@@ -130,9 +130,9 @@ public class GameActivity extends Activity implements OnCancelListener
 		 * 1) No fullscreen -> fullScreenCfg = 0
 		 * 2) Fullscreen -> fullScreenCfg has FULLSCREEN (HIDE_NAVIGATION contains FULLSCREEN)
 		 */
-		if (cfg.fullScreen)
+		if (prefs.fullScreen)
 		{
-			fullScreenCfg = cfg.hideNav ? SystemUiHider.FLAG_HIDE_NAVIGATION
+			fullScreenCfg = prefs.hideNav ? SystemUiHider.FLAG_HIDE_NAVIGATION
 					: Wrapper.SDK_INT < 11 ? SystemUiHider.FLAG_FULLSCREEN | SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES
 							: SystemUiHider.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES;
 		}
@@ -200,7 +200,7 @@ public class GameActivity extends Activity implements OnCancelListener
 					onBackPressed();
 					return true;
 				}
-				else if (Wrapper.SDK_INT >= 11 && cfg.fullScreen)
+				else if (Wrapper.SDK_INT >= 11 && prefs.fullScreen)
 				{
 					debug("API >= 11 & fullscreen is enabled, skipping other BACK handling");
 					return true;
@@ -274,7 +274,7 @@ public class GameActivity extends Activity implements OnCancelListener
 								if (((CheckBox) dialogView.findViewById(R.id.shown))
 										.isChecked())
 								{
-									cfg.setHintShown();
+									prefs.setHintShown();
 								}
 							}
 						}).create();
@@ -394,7 +394,7 @@ public class GameActivity extends Activity implements OnCancelListener
 	private void initResources()
 	{
 		res = getResources();
-		cfg = UserPrefs.getInstance(getApplication());
+		prefs = UserPrefs.getInstance(getApplication());
 	}
 
 	protected void hideUiDelayed()

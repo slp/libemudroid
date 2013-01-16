@@ -13,8 +13,10 @@ public class UserPrefs implements OnSharedPreferenceChangeListener
 {
 	private static UserPrefs instance = null;
 
-	private SharedPreferences prefsData;
 	private boolean dirty = false;
+	
+	protected SharedPreferences prefsData;
+	protected Resources res;
 	
 	public final boolean fullScreen;
 	public final boolean hideNav;
@@ -37,11 +39,11 @@ public class UserPrefs implements OnSharedPreferenceChangeListener
 		return instance;
 	}
 
-	private UserPrefs(Context context)
+	protected UserPrefs(Context context)
 	{
 		prefsData = PreferenceManager.getDefaultSharedPreferences(context);
 		
-		Resources res = context.getResources();
+		res = context.getResources();
 		
 		fullScreen = prefsData.getBoolean("fullScreen", res.getBoolean(R.bool.def_fullScreen));
 		hideNav = prefsData.getBoolean("hideNav", res.getBoolean(R.bool.def_hideNav));
