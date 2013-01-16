@@ -2,7 +2,6 @@ package com.androidemu;
 
 import java.util.List;
 
-import com.androidemu.priv.Emulator;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

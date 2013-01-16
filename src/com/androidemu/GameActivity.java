@@ -53,9 +53,10 @@ public class GameActivity extends Activity implements OnCancelListener
 
 	private Handler hideHandler;
 	private Runnable hideRunnable;
-
+	
+	private UserPrefs prefs;
+	
 	protected SystemUiHider uiHider;
-	protected UserPrefs prefs;
 	protected Resources res;
 	
 	protected boolean isGamePaused = false;
@@ -96,7 +97,7 @@ public class GameActivity extends Activity implements OnCancelListener
 
 		super.onStart();
 		
-		prefs = UserPrefs.getInstance(getApplication());
+		prefs = new UserPrefs(getApplicationContext());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -391,10 +392,10 @@ public class GameActivity extends Activity implements OnCancelListener
 		initResources();
 	}
 	
-	private void initResources()
+	protected void initResources()
 	{
 		res = getResources();
-		prefs = UserPrefs.getInstance(getApplication());
+		prefs = new UserPrefs(getApplicationContext());
 	}
 
 	protected void hideUiDelayed()

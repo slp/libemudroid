@@ -1,4 +1,4 @@
-package com.androidemu.priv;
+package com.androidemu;
 
 import android.content.Context;
 
@@ -10,7 +10,6 @@ import java.io.IOException;
 
 import java.nio.Buffer;
 
-import com.androidemu.Cheats;
 import com.androidemu.wrapper.Wrapper;
 
 public class Emulator
