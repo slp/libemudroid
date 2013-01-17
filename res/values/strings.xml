@@ -17,7 +17,7 @@
 	<string name="invalid_cheat_code">Cheat code is invalid!</string>
 	
 	<!-- Key selector -->
-	<string name="press_key_prompt">Press a key on the keyboard...</string>
+	<string name="press_key_prompt">Press a key...</string>
 	<string name="key_none">&lt;none&gt;</string>
 	<string name="key_unknown">&lt;unknown&gt;</string>
 	<string name="key_clear">Clear</string>
@@ -64,5 +64,5 @@
 	
 	<!-- Misc -->
 	<string name="fullscreen_hint"><b>Menu</b> is mapped to something, long-press <b>Back</b> to show menu</string>
-	<string name="no_rom">No ROM loaded.\nPress <b>Menu</b> for more options.</string>
+	<string name="no_rom">No ROM loaded.\nPress <b>Menu</b> button for more options.</string>
 </resources>
