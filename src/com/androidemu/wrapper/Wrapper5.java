@@ -1,6 +1,7 @@
 package com.androidemu.wrapper;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -71,5 +72,10 @@ class Wrapper5
 	public static boolean KeyEvent_isLongPress(KeyEvent event)
 	{
 		return event.isLongPress();
+	}
+	
+	public static void Activity_onBackPressed(Activity a)
+	{
+		a.onBackPressed();
 	}
 }

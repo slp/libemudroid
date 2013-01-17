@@ -303,4 +303,9 @@ public class Wrapper
 			Wrapper11.MenuItem_setShowAsAction(item, show);
 		}
 	}
+	
+	public static final void Activity_onBackPressed(Activity a)
+	{
+		Wrapper5.Activity_onBackPressed(a);
+	}
 }

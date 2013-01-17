@@ -201,7 +201,7 @@ public class GameActivity extends Activity implements OnDismissListener
 				{
 					debug("API < 5 => legacy BACK handling");
 					
-					onBackPressed();
+					Wrapper.Activity_onBackPressed(this);
 					return true;
 				}
 				else if (Wrapper.SDK_INT >= 11 && prefs.fullScreen)
@@ -338,12 +338,6 @@ public class GameActivity extends Activity implements OnDismissListener
 	public boolean onSearchRequested()
 	{
 		return false;
-	}
-	
-	@Override
-	public void onBackPressed()
-	{
-		// nothing here
 	}
 
 	@Override
