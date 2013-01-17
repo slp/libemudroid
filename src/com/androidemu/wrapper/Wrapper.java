@@ -236,6 +236,10 @@ public class Wrapper
 				return "DPAD Right";
 			case KeyEvent.KEYCODE_BACK:
 				return "BACK";
+			case KeyEvent.KEYCODE_MENU:
+				return "MENU";
+			case KeyEvent.KEYCODE_HOME:
+				return "HOME";
 			case KeyEvent.KEYCODE_CALL:
 				return "CALL";
 			case KeyEvent.KEYCODE_CAMERA:
