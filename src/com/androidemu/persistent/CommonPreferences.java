@@ -5,13 +5,18 @@ import com.androidemu.R.xml;
 import com.androidemu.wrapper.Wrapper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.view.MenuItem;
 
 @SuppressWarnings("deprecation")
-public class CommonPreferences extends PreferenceActivity
+public class CommonPreferences extends PreferenceActivity implements Preference.OnPreferenceClickListener
 {
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -19,6 +24,8 @@ public class CommonPreferences extends PreferenceActivity
 		super.onCreate(savedInstanceState);
 		
 		addPreferencesFromResource(R.xml.common);
+		
+		findPreference("reset").setOnPreferenceClickListener(this);
 		
 		Wrapper.displayHomeAsUp(this);
 	}
@@ -42,4 +49,28 @@ public class CommonPreferences extends PreferenceActivity
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	@Override
+	public boolean onPreferenceClick(Preference preference)
+	{
+		String key = preference.getKey();
+        
+        if( key.equals("reset") )
+        {
+        	actionResetUserPrefs();
+        	return true;
+        }
+        else
+        {
+        	return false;
+        }
+	}
+	
+	protected void actionResetUserPrefs()
+    {
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        sharedPreferences.edit().clear().commit();
+        
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.common, true);
+    }
 }

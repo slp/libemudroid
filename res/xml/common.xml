@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/other" android:order="100">
+    <PreferenceCategory android:title="Common" android:order="1">
         <CheckBoxPreference
             android:defaultValue="@bool/def_fullScreen"
             android:key="fullScreen"
@@ -19,6 +19,12 @@
             android:key="autoResume"
             android:title="@string/always_resume"
             android:summary="@string/summary_autoResume"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/other" android:order="100">
+        <Preference
+            android:key="reset"
+            android:title="Reset"
+            android:summary="Restore default settings"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
