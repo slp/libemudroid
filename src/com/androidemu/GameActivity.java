@@ -103,19 +103,9 @@ public class GameActivity extends Activity implements OnDismissListener
 		prefs = new UserPrefs(getApplicationContext());
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState)
+	protected boolean isMenuAccessible()
 	{
-		debug("onPostCreate");
-		
-		super.onPostCreate(savedInstanceState);
-
-		if (Wrapper.SDK_INT >= 11 && !Wrapper.isHwMenuBtnAvailable(this)
-				&& !prefs.hintShown_fullScreen)
-		{
-			showDialog(DIALOG_FULLSCREEN_HINT);
-		}
+		return true;
 	}
 	
 	@Override
@@ -124,6 +114,11 @@ public class GameActivity extends Activity implements OnDismissListener
 		debug("onResume");
 		
 		super.onResume();
+		
+		if (!isMenuAccessible())
+		{
+			showDialog(DIALOG_FULLSCREEN_HINT);
+		}
 		
 		/*
 		 * On Honeycomb and newer:
