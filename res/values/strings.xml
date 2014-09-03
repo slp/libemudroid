@@ -65,5 +65,5 @@
 	<!-- Misc -->
 	<string name="fullscreen_hint"><b>Menu</b> is mapped to something, long-press <b>Back</b> to show menu</string>
 	<string name="no_rom">No ROM loaded.\nPress <b>Menu</b> button for more options.</string>
-	<string name="stop_reminding">Don't show this message again</string>
+	<string name="stop_reminding">Don\'t show this message again</string>
 </resources>

@@ -110,15 +110,15 @@ class SystemUiHiderHoneycomb extends SystemUiHiderBase
 			// Test against mTestFlags to see if the system UI is visible.
 			if ((vis & mTestFlags) != 0)
 			{
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-				{
+//				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+//				{
 					// Pre-Jelly Bean, we must manually hide the action bar
 					// and use the old window flags API.
 					mActivity.getActionBar().hide();
 					mActivity.getWindow().setFlags(
 							WindowManager.LayoutParams.FLAG_FULLSCREEN,
 							WindowManager.LayoutParams.FLAG_FULLSCREEN);
-				}
+//				}
 
 				// Trigger the registered listener and cache the visibility
 				// state.
@@ -129,12 +129,12 @@ class SystemUiHiderHoneycomb extends SystemUiHiderBase
 			else
 			{
 				mAnchorView.setSystemUiVisibility(mShowFlags);
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-				{
+//				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+//				{
 					// Pre-Jelly Bean, we must use the old window flags API.
 					mActivity.getWindow().setFlags(0,
 							WindowManager.LayoutParams.FLAG_FULLSCREEN);
-				}
+//				}
 
 				// Trigger the registered listener and cache the visibility
 				// state.
